@@ -1,0 +1,5 @@
+/myrenren/nbproject/private/
+/MyRenren.iml
+.idea
+conf/secret.txt
+src/apiconfig.properties
