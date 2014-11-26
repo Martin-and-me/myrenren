@@ -4,7 +4,6 @@ import com.nutcake.visualsocial.graph.RelationGraph;
 import com.renren.api.AuthorizationException;
 import com.renren.api.RennClient;
 import com.renren.api.RennException;
-import com.renren.api.service.User;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
@@ -13,15 +12,17 @@ import java.util.Queue;
  * 人人网朋友关系抓取图
  * @since 11/26/14
  */
-public class RennCrawler implements Crawler<Long, User> {
+public class RennCrawler implements Crawler<Long> {
     private String m_apiKey;
     private String m_apiSecret;
     private RennClient m_client;
-    private RelationGraph<Long, User> m_resultGraph;
+    private RelationGraph<Long> m_resultGraph;
+    private int m_maxUserCount = 20000;
 
-    public RennCrawler(String apiKey, String apiSecret) {
+    public RennCrawler(String apiKey, String apiSecret, int maxUserCount) {
         m_apiKey = apiKey;
         m_apiSecret = apiSecret;
+        m_maxUserCount = maxUserCount;
     }
 
     @Override
@@ -37,21 +38,34 @@ public class RennCrawler implements Crawler<Long, User> {
 
     @Override
     public void crawl(Long userId) {
-        User source;
         try {
-            source = m_client.getUserService().getUser(userId);
-
             m_resultGraph = new RelationGraph<>();
-            m_resultGraph.addVertex(source.getId());
+            m_resultGraph.addVertex(userId);
 
-            int maxVertices = 1000;
-            Queue<User> queue = new ArrayDeque<>();
-            queue.add(source);
+            int maxVertices = m_maxUserCount;
+            Queue<Long> queue = new ArrayDeque<>();
+            queue.add(userId);
             int idx = 0;
             while (idx < maxVertices && !queue.isEmpty()) {
-                User current = queue.poll();
+                Long current = queue.poll();
                 Thread.sleep(30000);
+                Integer[] friendsId = m_client.getFriendService().listFriend(current, 2000, 1);
+                for (Integer i : friendsId) {
+                    queue.add(i.longValue());
+                    m_resultGraph.addVertexWithEdge(i.longValue(), current);
+                    idx++;
+                }
+            }
 
+            while (!queue.isEmpty()) {
+                Long current = queue.poll();
+                Thread.sleep(30000);
+                Integer[] friendsId = m_client.getFriendService().listFriend(current, 2000, 1);
+                for (Integer i : friendsId) {
+                    if (m_resultGraph.contain(i.longValue())) {
+                        m_resultGraph.addVertexWithEdge(i.longValue(), current);
+                    }
+                }
             }
         } catch (InterruptedException | RennException e) {
             e.printStackTrace();
@@ -59,7 +73,7 @@ public class RennCrawler implements Crawler<Long, User> {
     }
 
     @Override
-    public RelationGraph<Long, User> graphResult() {
+    public RelationGraph<Long> graphResult() {
         return m_resultGraph;
     }
 }

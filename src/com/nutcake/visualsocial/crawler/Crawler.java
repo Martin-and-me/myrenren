@@ -6,7 +6,7 @@ import com.nutcake.visualsocial.graph.RelationGraph;
  * @author Dawei YANG
  * @since 11/26/14
  */
-public interface Crawler<K, T> {
+public interface Crawler<K> {
 
     /**
      * 实行初始配置
@@ -21,5 +21,5 @@ public interface Crawler<K, T> {
     /**
      * 得到抓取结果
      */
-    RelationGraph<K, T> graphResult();
+    RelationGraph<K> graphResult();
 }
