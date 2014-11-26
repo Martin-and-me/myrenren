@@ -7,8 +7,6 @@ import com.renren.api.service.User;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -40,15 +38,17 @@ public class SocialVisualizer {
         System.out.println(user.getName() + "'s friend: (10)");
 
         //显示10个好友
-        Integer[] friendsId = renn.getFriendService().listFriend(daweiId, 10, 1);
-
+        Integer[] friendsId = renn.getFriendService().listFriend(daweiId, 1000, 1);
+        for (Integer aFriendsId : friendsId) {
+            System.out.println(aFriendsId);
+        }
+        /*
         List<String> names = new ArrayList<>();
         for (Integer i : friendsId) {
             User friend = renn.getUserService().getUser(i.longValue());
             names.add(friend.getName());
         }
-        for (String name : names) {
-            System.out.println(name);
-        }
+        names.forEach(System.out::println);
+        */
     }
 }
