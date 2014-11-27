@@ -64,7 +64,7 @@ public class RennCrawler implements Crawler<Long> {
                 Integer[] friendsId = m_client.getFriendService().listFriend(current, 2000, 1);
                 for (Integer i : friendsId) {
                     if (m_resultGraph.contain(i.longValue())) {
-                        m_resultGraph.addVertexWithEdge(i.longValue(), current);
+                        m_resultGraph.addEdge(i.longValue(), current);
                     }
                 }
             }
