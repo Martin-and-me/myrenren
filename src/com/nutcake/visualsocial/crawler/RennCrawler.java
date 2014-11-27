@@ -55,6 +55,7 @@ public class RennCrawler implements Crawler<Long> {
                     m_resultGraph.addVertexWithEdge(i.longValue(), current);
                     idx++;
                 }
+                System.out.println(idx + "/" + m_maxUserCount);
             }
 
             while (!queue.isEmpty()) {
