@@ -49,7 +49,12 @@ public class RennCrawler implements Crawler<Long> {
             while (idx < maxVertices && !queue.isEmpty()) {
                 Long current = queue.poll();
                 Thread.sleep(30000);
-                Integer[] friendsId = m_client.getFriendService().listFriend(current, 2000, 1);
+                Integer[] friendsId;
+                try {
+                    friendsId = m_client.getFriendService().listFriend(current, 2000, 1);
+                } catch (RennException ignored) {
+                    continue;
+                }
                 for (Integer i : friendsId) {
                     queue.add(i.longValue());
                     m_resultGraph.addVertexWithEdge(i.longValue(), current);
@@ -60,14 +65,19 @@ public class RennCrawler implements Crawler<Long> {
             while (!queue.isEmpty()) {
                 Long current = queue.poll();
                 Thread.sleep(30000);
-                Integer[] friendsId = m_client.getFriendService().listFriend(current, 2000, 1);
+                Integer[] friendsId;
+                try {
+                    friendsId = m_client.getFriendService().listFriend(current, 2000, 1);
+                } catch (RennException e) {
+                    continue;
+                }
                 for (Integer i : friendsId) {
                     if (m_resultGraph.contain(i.longValue())) {
                         m_resultGraph.addVertexWithEdge(i.longValue(), current);
                     }
                 }
             }
-        } catch (InterruptedException | RennException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
