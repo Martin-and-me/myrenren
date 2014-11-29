@@ -10,7 +10,7 @@ import java.util.Set;
  * @since 11/26/14
  */
 
-class Node<K> {
+class Node<K> implements Serializable {
     private Set<K> neighbors = new HashSet<>();
 
     public void addNeighbor(K key) {

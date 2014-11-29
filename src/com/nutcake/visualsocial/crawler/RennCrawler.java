@@ -60,6 +60,7 @@ public class RennCrawler implements Crawler<Long> {
                     m_resultGraph.addVertexWithEdge(i.longValue(), current);
                     idx++;
                 }
+                System.out.println(idx + "/" + m_maxUserCount);
             }
 
             while (!queue.isEmpty()) {
@@ -73,7 +74,7 @@ public class RennCrawler implements Crawler<Long> {
                 }
                 for (Integer i : friendsId) {
                     if (m_resultGraph.contain(i.longValue())) {
-                        m_resultGraph.addVertexWithEdge(i.longValue(), current);
+                        m_resultGraph.addEdge(i.longValue(), current);
                     }
                 }
             }
