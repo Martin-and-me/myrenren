@@ -286,7 +286,7 @@ public class Grouper {
     public Set<Set<Long>> strongGroup(RelationGraph<Long> graph,Set<Set<Long>> cliques) {
         // 找最大密度子图的算法需要用到网络流知识，直接暴力算太慢，而且据他说会出现找到的子图较小的情况。
         // 他给的第二个算法：
-        Set<Set<Long>> stronggroup=new HashSet();
+        Set<Set<Long>> stronggroup=cliques;
         
         Iterator<Set<Long>> cliquesit=cliques.iterator();
         //对团遍历
@@ -323,7 +323,7 @@ public class Grouper {
                    group.add(current);
                }
            }
-           stronggroup.add(group);
+           stronggroup.iterator().next().addAll(group);
                
         }
 
