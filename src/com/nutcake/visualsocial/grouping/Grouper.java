@@ -91,11 +91,13 @@ package com.nutcake.visualsocial.grouping;
 import com.nutcake.visualsocial.graph.Node;
 import com.nutcake.visualsocial.graph.RelationGraph;
 import com.nutcake.visualsocial.misc.CloneUtils;
+import com.nutcake.visualsocial.Reader;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Iterator;
+
 
 /**
  * @author Martin
@@ -200,6 +202,7 @@ import java.util.Iterator;
 
 public class Grouper {
     private RelationGraph<Long> graph;
+    Reader reader=new Reader();
 
     public Grouper(RelationGraph<Long> graph) {
         this.graph = graph;
@@ -313,7 +316,7 @@ public class Grouper {
                        s2=s2+graph.nodes.get(currenttested).getNeighbor().get(current);
                    }
                    else{
-                       s2=s2+graph.nodes.get(currenttested).getNeighbor().get(current);
+                       s2=s2+reader.getStrength(graph,currenttested,current);
                    }
                }
                if(s1/s2>0.5){
