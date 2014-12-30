@@ -34,9 +34,10 @@ public class SocialVisualizer {
             return;
         }
 
-        Crawler<Long> crawler = new RennCrawler(apiKey, apiSecret, 20000);
+        Crawler<Long> crawler = new RennCrawler(apiKey, apiSecret,50);
         crawler.init();
-        crawler.crawl(356795949L);
+        //crawler.crawl(356795949L);
+        crawler.crawl(320182196L);
         RelationGraph graph = crawler.graphResult();
         FileOutputStream fs = new FileOutputStream("test.txt");
         ObjectOutputStream os = new ObjectOutputStream(fs);
