@@ -34,7 +34,7 @@ public class SocialVisualizer {
             return;
         }
 
-        Crawler<Long> crawler = new RennCrawler(apiKey, apiSecret,50);
+        Crawler<Long> crawler = new RennCrawler(apiKey, apiSecret,100);
         crawler.init();
         //crawler.crawl(356795949L);
         crawler.crawl(320182196L);

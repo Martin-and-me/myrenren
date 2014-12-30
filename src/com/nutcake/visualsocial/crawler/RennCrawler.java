@@ -17,7 +17,7 @@ public class RennCrawler implements Crawler<Long> {
     private String m_apiSecret;
     private RennClient m_client;
     private RelationGraph<Long> m_resultGraph;
-    private int m_maxUserCount = 20000;
+    private int m_maxUserCount = 100;
 
     public RennCrawler(String apiKey, String apiSecret, int maxUserCount) {
         m_apiKey = apiKey;
@@ -48,7 +48,7 @@ public class RennCrawler implements Crawler<Long> {
             int idx = 0;
             while (idx < maxVertices && !queue.isEmpty()) {
                 Long current = queue.poll();
-                Thread.sleep(30000);
+                // Thread.sleep(30000);
                 Integer[] friendsId;
                 try {
                     friendsId = m_client.getFriendService().listFriend(current, 2000, 1);
@@ -59,13 +59,16 @@ public class RennCrawler implements Crawler<Long> {
                     queue.add(i.longValue());
                     m_resultGraph.addVertexWithEdge(i.longValue(), current);
                     idx++;
+                    if(idx>=maxVertices){
+                        break;
+                    }
                 }
                 System.out.println(idx + "/" + m_maxUserCount);
             }
 
             while (!queue.isEmpty()) {
                 Long current = queue.poll();
-                Thread.sleep(30000);
+                Thread.sleep(30);
                 Integer[] friendsId;
                 try {
                     friendsId = m_client.getFriendService().listFriend(current, 2000, 1);
