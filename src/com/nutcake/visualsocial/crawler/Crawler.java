@@ -20,6 +20,7 @@ public interface Crawler<K> {
 
     /**
      * 得到抓取结果
+     * 
      */
     RelationGraph<K> graphResult();
 }
